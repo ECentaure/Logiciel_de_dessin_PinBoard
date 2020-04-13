@@ -8,6 +8,8 @@ import pobj.pinboard.editor.CommandStack;
 import pobj.pinboard.editor.EditorInterface;
 import pobj.pinboard.editor.Selection;
 import pobj.pinboard.editor.tools.Tool;
+import pobj.pinboard.editor.tools.ToolEllipse;
+import pobj.pinboard.editor.tools.ToolRect;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,6 +31,8 @@ public class EditorWindow implements EditorInterface{
 	
 	public EditorWindow(Stage stage) {
 		
+		ToolEllipse tool_ellipse = new ToolEllipse();
+		ToolRect tool_rectangle = new ToolRect();
 		toolbar = new ToolBar();
 		
 		stage.setTitle("Titre");
@@ -66,6 +70,9 @@ public class EditorWindow implements EditorInterface{
 		Button box = new Button("Box");
 		Button ellipse = new Button("Ellipse");
 		Button image = new Button("Image");
+		
+		box.setOnAction((e) -> {outil_courant = tool_rectangle; });
+		box.setOnAction((e) -> {outil_courant = tool_ellipse; });
 		
 		toolbar.getItems().add(box);
 		toolbar.getItems().add(ellipse);
