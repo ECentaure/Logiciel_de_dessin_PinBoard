@@ -11,12 +11,13 @@ public class ClipEllipse extends AbstractClip implements Clip  {
 	private Color color;
 	
 	public ClipEllipse(double left, double top, double right, double bottom, Color color){
+		
 		super( left,  top,  right,  bottom,  color);
 	}
 	
 	public void draw(GraphicsContext ctx) {
-		ctx.setFill(color);
-		ctx.fillOval(left,top,right - left,bottom - top);
+		ctx.setFill(this.getColor());
+		ctx.fillOval(this.getLeft(),this.getTop(),this.getRight() - this.getLeft(),this.getBottom() - this.getTop());
 	}
 	
 	@Override 

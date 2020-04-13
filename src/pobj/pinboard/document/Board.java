@@ -6,10 +6,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Board implements Clip {
-	private List<Clip> contents ;
+	private List<Clip> contents = new ArrayList<Clip>();
 	
 	public Board() {
-		contents = new ArrayList<Clip>();
+		
 	}
 	
 	public List<Clip> getContents(){
@@ -101,8 +101,9 @@ public class Board implements Clip {
 
 	@Override
 	public Clip copy() {
-		// TODO Auto-generated method stub
-		return null;
+		Board b = new Board();
+		b.addClip(contents);
+		return b;
 	}
 	
 }
