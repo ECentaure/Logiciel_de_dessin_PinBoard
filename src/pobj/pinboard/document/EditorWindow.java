@@ -11,8 +11,6 @@ import pobj.pinboard.editor.tools.Tool;
 import pobj.pinboard.editor.tools.ToolEllipse;
 import pobj.pinboard.editor.tools.ToolRect;
 import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 
@@ -33,9 +31,14 @@ public class EditorWindow implements EditorInterface{
 		
 		ToolEllipse tool_ellipse = new ToolEllipse();
 		ToolRect tool_rectangle = new ToolRect();
-		toolbar = new ToolBar();
+		
+		
+		Label label = new Label("Aucun outil selectionné");
+		separator = new Separator();
 		
 		stage.setTitle("Titre");
+		
+		
 		vbox = new VBox();
 		
 		canvas = new javafx.scene.canvas.Canvas(800, 600);
@@ -43,11 +46,6 @@ public class EditorWindow implements EditorInterface{
 		canvas.setOnMousePressed((e) -> press(e));
 		canvas.setOnMouseDragged((e) -> drag(e));
 		canvas.setOnMouseReleased((e) -> release(e));
-		
-		vbox.getChildren().add(menubar);
-		vbox.getChildren().add(toolbar);
-		vbox.getChildren().add(canvas);
-		vbox.getChildren().add(separator);	
 		
 		MenuItem newMI = new MenuItem("New");
 		MenuItem closeMI = new MenuItem("Close");
@@ -59,32 +57,39 @@ public class EditorWindow implements EditorInterface{
 		Menu file = new Menu("File");
 		Menu edit  = new Menu("Edit");
 		Menu tools = new Menu("Tools");
-
-		file.getItems().add(newMI);
-		file.getItems().add(closeMI);
 		
-		menubar.getMenus().add(file);
-		menubar.getMenus().add(edit);
-		menubar.getMenus().add(tools);
+		file.getItems().addAll(newMI,closeMI);
+
+		
+		menubar= new MenuBar(file,edit,tools);
+
+		vbox.getChildren().add(menubar);
+		
 		
 		Button box = new Button("Box");
 		Button ellipse = new Button("Ellipse");
 		Button image = new Button("Image");
 		
-		box.setOnAction((e) -> {outil_courant = tool_rectangle; });
-		box.setOnAction((e) -> {outil_courant = tool_ellipse; });
+		toolbar = new ToolBar();
 		
-		toolbar.getItems().add(box);
-		toolbar.getItems().add(ellipse);
-		toolbar.getItems().add(image);
+		box.setOnAction((e) -> {outil_courant = tool_rectangle; label.textProperty().set(outil_courant.getName(this));});
+		box.setOnAction((e) -> {outil_courant = tool_ellipse; label.textProperty().set(outil_courant.getName(this));});
+		
+		toolbar.getItems().addAll(box,ellipse,image);
+	
 		
 		board = new Board();
 
 		board.draw(canvas.getGraphicsContext2D());
 		
+		vbox.getChildren().add(toolbar);
+		vbox.getChildren().add(canvas);
+		vbox.getChildren().add(separator);
+		vbox.getChildren().add(label);
 		
 		stage.setScene(new javafx.scene.Scene(vbox));
 		stage.show();
+		
 	}
 
 	public void press( MouseEvent e) {
