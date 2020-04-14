@@ -15,15 +15,17 @@ public class ToolRect implements Tool{
 	private ClipRect rectangle;
 	
 	public void press(EditorInterface i, MouseEvent e) {
+		
 		x0 = e.getX();
 		y0 = e.getY();
-		 contour_rectangle = new ClipRect( x0 ,y0 , e.getX(), e.getY(), Color.BLACK);
+		contour_rectangle = new ClipRect( x0 ,y0 , e.getX(), e.getY(), Color.BLACK);
+		System.out.print("creation rectangle");
 	}
 
 	
 	public void drag(EditorInterface i, MouseEvent e) {
+		
 		i.getBoard();
-	
 		contour_rectangle.setGeometry( e.getX() + x0,  y0 ,  x0 +e.getX(),  y0 + e.getY());
 		
 	}
@@ -32,6 +34,7 @@ public class ToolRect implements Tool{
 	public void release(EditorInterface i, MouseEvent e) {
 		ClipRect rectangle = new ClipRect( Math.min(x0,e.getX()) ,Math.min(y0,e.getY()) , Math.max(x0,e.getX()), Math.max(y0,e.getY()), Color.BLACK);
 		i.getBoard().addClip(rectangle);
+	    
 		
 	}
 

@@ -43,7 +43,7 @@ public class EditorWindow implements EditorInterface{
 		
 		canvas = new javafx.scene.canvas.Canvas(800, 600);
 
-		canvas.setOnMousePressed((e) -> press(e));
+		canvas.setOnMousePressed((e) -> {press(e);});
 		canvas.setOnMouseDragged((e) -> drag(e));
 		canvas.setOnMouseReleased((e) -> release(e));
 		
@@ -73,14 +73,14 @@ public class EditorWindow implements EditorInterface{
 		toolbar = new ToolBar();
 		
 		box.setOnAction((e) -> {outil_courant = tool_rectangle; label.textProperty().set(outil_courant.getName(this));});
-		box.setOnAction((e) -> {outil_courant = tool_ellipse; label.textProperty().set(outil_courant.getName(this));});
+		ellipse.setOnAction((e) -> {outil_courant = tool_ellipse; label.textProperty().set(outil_courant.getName(this));});
 		
 		toolbar.getItems().addAll(box,ellipse,image);
 	
 		
 		board = new Board();
 
-		board.draw(canvas.getGraphicsContext2D());
+		
 		
 		vbox.getChildren().add(toolbar);
 		vbox.getChildren().add(canvas);
@@ -94,14 +94,22 @@ public class EditorWindow implements EditorInterface{
 
 	public void press( MouseEvent e) {
 		outil_courant.press(this, e );
+		this.draw();
 	}
 	public void drag (MouseEvent e) {
 		outil_courant.drag(this, e);
+		this.draw();
 	}
 	public void release( MouseEvent e) {
 		outil_courant.release(this, e);
+		this.draw();
 	}
 
+	public void draw() {
+		outil_courant.drawFeedback(this, canvas.getGraphicsContext2D());
+		board.draw(canvas.getGraphicsContext2D());
+		
+	}
 	
 	public Board getBoard() {
 		return board;
