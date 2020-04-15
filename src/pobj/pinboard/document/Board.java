@@ -41,6 +41,7 @@ public class Board implements Clip {
 		gc.fillRect(0,0,gc.getCanvas().getWidth(),gc.getCanvas().getHeight());
 		
 		for(Clip element: contents) {
+			
 			element.draw(gc);
 		}
 	}
