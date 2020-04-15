@@ -28,8 +28,8 @@ public class ToolRect implements Tool{
 		
 		
 		contour = true;
+		
 		contour_rectangle.setGeometry(Math.min(x0,e.getX()) ,Math.min(y0,e.getY()) , Math.max(x0,e.getX()), Math.max(y0,e.getY()));
-		i.getBoard().addClip(contour_rectangle);
 		
 		
 	}
@@ -37,6 +37,7 @@ public class ToolRect implements Tool{
 	
 	public void release(EditorInterface i, MouseEvent e) {
 		contour = false;
+	
 		ClipRect rectangle = new ClipRect( Math.min(x0,e.getX()) ,Math.min(y0,e.getY()) , Math.max(x0,e.getX()), Math.max(y0,e.getY()), Color.BLACK);
 		i.getBoard().addClip(rectangle);
 	    
@@ -45,14 +46,14 @@ public class ToolRect implements Tool{
 
 	
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
-		if(contour) {
+		/*if(contour) {
 			gc.setStroke(Color.GREEN);   //en travaux 
 	        gc.setLineWidth(5);
 			gc.strokeRect(this.contour_rectangle.getLeft(),this.contour_rectangle.getTop(),this.contour_rectangle.getRight() - this.contour_rectangle.getLeft(),this.contour_rectangle.getBottom() - this.contour_rectangle.getTop());
 			
-		}else {
+		}else {*/
 		i.getBoard().draw(gc);
-		}
+		//}
 		
 	}
 

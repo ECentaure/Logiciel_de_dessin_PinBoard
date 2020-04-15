@@ -15,15 +15,14 @@ public class ToolEllipse implements Tool{
 		x0 = e.getX();
 		y0 = e.getY();
 		contour_ellipse = new ClipEllipse( x0 ,y0 , e.getX(), e.getY(), Color.RED);
-		i.getBoard().addClip(contour_ellipse);
-		
+
 	}
 
 	
 	public void drag(EditorInterface i, MouseEvent e) {
 		
-		i.getBoard();
-		contour_ellipse.setGeometry( e.getX() + x0,  y0 ,  x0 +e.getX(),  y0 + e.getY());
+		
+		contour_ellipse.setGeometry(Math.min(x0,e.getX()) ,Math.min(y0,e.getY()) , Math.max(x0,e.getX()), Math.max(y0,e.getY()));
 	
 	
 		
