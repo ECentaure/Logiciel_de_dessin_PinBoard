@@ -79,7 +79,7 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		
 		file.getItems().addAll(newMI,closeMI);
 		edit.getItems().addAll(copyMI,pasteMI,deleteMI);
-		
+	
 		menubar= new MenuBar(file,edit,tools);
 
 		vbox.getChildren().add(menubar);
@@ -90,13 +90,14 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		Button image = new Button("Image");
 		Button select = new Button("Selection");
 		
+		
 		toolbar = new ToolBar();
 		
 		box.setOnAction((e) -> {outil_courant = tool_rectangle; label.textProperty().set(outil_courant.getName(this));});
 		ellipse.setOnAction((e) -> {outil_courant = tool_ellipse; label.textProperty().set(outil_courant.getName(this));});
 		select.setOnAction((e) -> {outil_courant = tool_selection; label.textProperty().set(outil_courant.getName(this));});
 		
-		toolbar.getItems().addAll(box,ellipse,image);
+		toolbar.getItems().addAll(box,ellipse,image,select);
 	
 		
 		board = new Board();
