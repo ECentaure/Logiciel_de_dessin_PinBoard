@@ -35,7 +35,7 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 	private Tool outil_courant;
 
 	
-	public EditorWindow(Stage stage)  {
+	public EditorWindow(Stage stage) {
 		
 		Clipboard.getInstance().addListener(this);
 		
@@ -66,11 +66,12 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		MenuItem pasteMI = new MenuItem("Paste");
 		MenuItem deleteMI = new MenuItem("Delete");
 		
+		
 		newMI.setOnAction( (e)-> new EditorWindow(new Stage()));
 		closeMI.setOnAction( (e)-> 	{Clipboard.getInstance().removeListener(this); stage.close() ;});
 		
-		copyMI.setOnAction((e)-> Clipboard.getInstance().copyToClipboard(selection.getContents()));
-		pasteMI.setOnAction((e)-> board.addClip(Clipboard.getInstance().copyFromClipboard()));
+		copyMI.setOnAction((e)-> Clipboard.getInstance().copyToClipboard(this.getSelection().getContents()));
+		pasteMI.setOnAction((e)->{ System.out.print("clipboard vide"); board.addClip(Clipboard.getInstance().copyFromClipboard() ) ; draw() ; } );
 		deleteMI.setOnAction((e)-> Clipboard.getInstance().clear());
 		
 		Menu file = new Menu("File");
@@ -109,6 +110,9 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		vbox.getChildren().add(separator);
 		vbox.getChildren().add(label);
 		
+		//pasteMI.setDisable(true);
+
+		
 		stage.setScene(new javafx.scene.Scene(vbox));
 		stage.show();
 		
@@ -116,20 +120,23 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 
 	public void press( MouseEvent e) {
 		outil_courant.press(this, e );
-		this.draw();
+		//this.draw();
 	}
 	public void drag (MouseEvent e) {
+		
+		
 		outil_courant.drag(this, e);
 		this.draw();
 	}
 	public void release( MouseEvent e) {
 		outil_courant.release(this, e);
 		this.draw();
+		board.draw(canvas.getGraphicsContext2D());
 	}
 
 	public void draw() {
 		outil_courant.drawFeedback(this, canvas.getGraphicsContext2D());
-		board.draw(canvas.getGraphicsContext2D());
+		
 		
 	}
 	
@@ -140,6 +147,7 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 	@Override
 	public Selection getSelection() {
 		return selection ;
+	
 	}
 
 	@Override
@@ -148,12 +156,14 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		return null;
 	}
 
-	@Override
+
 	public void clipboardChanged() {
 		
 		if(Clipboard.getInstance().isEmpty()) {	
 			pasteMI.setDisable(true); //Paste est grisé
+			System.out.print("clipboard vide");
 		}else {
+			System.out.print("clipboard non vide");
 			pasteMI.setDisable(false);
 		}
 		

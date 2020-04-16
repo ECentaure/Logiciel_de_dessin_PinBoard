@@ -21,7 +21,7 @@ public class ToolSelection implements Tool {
 		if(e.isShiftDown()) {
 			i.getSelection().toogleSelect(i.getBoard(), e.getX(),e.getY());
 		}else {
-			i.getSelection().clear();
+			//i.getSelection().clear();
 			i.getSelection().select(i.getBoard(), e.getX(),e.getY());
 		}
 	}

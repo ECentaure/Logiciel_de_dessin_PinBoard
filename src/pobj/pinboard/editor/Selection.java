@@ -49,8 +49,7 @@ public class Selection {
 		 double min_y0 = 0;
 		 double max_xn = 0;
 		 double max_yn = 0;
-		
-		 
+
 		 gc.strokeRect(min_x0, min_y0, max_xn - min_x0, max_yn - min_x0);
 		 
 	 }

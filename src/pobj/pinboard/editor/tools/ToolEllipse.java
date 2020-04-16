@@ -38,10 +38,13 @@ public class ToolEllipse implements Tool{
 	
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
 	
-		gc.setFill(Color.BLACK);
-		gc.strokeOval(contour_ellipse.getLeft() ,contour_ellipse.getTop() ,contour_ellipse.getRight(),contour_ellipse.getBottom());
-		
-		i.getBoard().draw(gc);
+		i.getBoard().draw(gc.getCanvas().getGraphicsContext2D());
+		gc.setStroke(Color.BLACK);   //en travaux 
+        gc.setLineWidth(5);
+
+		gc.strokeOval(this.contour_ellipse.getLeft(),this.contour_ellipse.getTop(),this.contour_ellipse.getRight() - this.contour_ellipse.getLeft(),this.contour_ellipse.getBottom() - this.contour_ellipse.getTop());
+        
+
 		
 	}
 

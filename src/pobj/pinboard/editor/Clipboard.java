@@ -21,12 +21,15 @@ public class Clipboard {
 	}
 	
 	public void copyToClipboard(List<Clip> clips){
+		//System.out.print("copytoclip");
+		
 		for(Clip element: clips ) {
 			contents.add(element.copy());
 		}
 		
 		for(ClipboardListener cible : liste_cibles) {
 			cible.clipboardChanged();
+			
 		}
 	}
 	
@@ -39,6 +42,7 @@ public class Clipboard {
 		
 		for(ClipboardListener cible : liste_cibles) {
 			cible.clipboardChanged();
+			//System.out.print("copyfromclip");
 		}
 		return contents_copy;
 	}

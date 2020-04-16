@@ -46,14 +46,12 @@ public class ToolRect implements Tool{
 
 	
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
-		/*if(contour) {
-			gc.setStroke(Color.GREEN);   //en travaux 
+			i.getBoard().draw(gc.getCanvas().getGraphicsContext2D());
+			gc.setStroke(Color.BLACK);   //en travaux 
 	        gc.setLineWidth(5);
+
 			gc.strokeRect(this.contour_rectangle.getLeft(),this.contour_rectangle.getTop(),this.contour_rectangle.getRight() - this.contour_rectangle.getLeft(),this.contour_rectangle.getBottom() - this.contour_rectangle.getTop());
-			
-		}else {*/
-		i.getBoard().draw(gc);
-		//}
+
 		
 	}
 
