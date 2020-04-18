@@ -14,6 +14,9 @@ import pobj.pinboard.editor.tools.ToolEllipse;
 import pobj.pinboard.editor.tools.ToolRect;
 import pobj.pinboard.editor.tools.ToolSelection;
 import javafx.scene.control.Button;
+
+import java.util.List;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 
@@ -32,11 +35,14 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 	private MenuItem copyMI;
 	private MenuItem pasteMI;
 	private MenuItem deleteMI;
-	
+	private CommandStack cmdstack;
 	private Tool outil_courant;
 
 	
 	public EditorWindow(Stage stage) {
+		
+		cmdstack = new CommandStack();
+		
 		this.stage = stage;
 		Clipboard.getInstance().addListener(this);
 		
@@ -67,6 +73,14 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		 pasteMI = new MenuItem("Paste");
 		MenuItem deleteMI = new MenuItem("Delete");
 		
+		MenuItem groupMI = new MenuItem("Group");
+		MenuItem ungroupMI = new MenuItem("Ungroup");
+		
+		MenuItem redoMI = new MenuItem("Redo");
+		MenuItem undoMI = new MenuItem("Undo");
+		
+		redoMI.setOnAction( (e)-> { cmdstack.undo();});
+		undoMI.setOnAction( (e)-> { cmdstack.redo();});
 		
 		newMI.setOnAction( (e)-> new EditorWindow(new Stage()));
 		closeMI.setOnAction( (e)-> 	{Clipboard.getInstance().removeListener(this); stage.close() ;});
@@ -75,13 +89,21 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		pasteMI.setOnAction((e)->{ System.out.print("clipboard vide"); board.addClip(Clipboard.getInstance().copyFromClipboard() ) ; draw() ; } );
 		deleteMI.setOnAction((e)->{ Clipboard.getInstance().clear();});
 		
+		groupMI.setOnAction( (e)-> { List<Clip> lc = selection.getContents() ; board.removeClip(lc);
+									ClipGroup cg = new ClipGroup(); 
+									for( Clip c : lc ) {cg.addClip(c);}
+									board.addClip(cg);} );
+		
+		ungroupMI.setOnAction( (e)-> {{ List<Clip> lc = selection.getContents() ; board.removeClip(lc);
+										ClipGroup cg = new ClipGroup(); List<Clip> degroupe_clip = cg.getClips() ; for( Clip c : degroupe_clip ) {board.addClip(c);}}});
+		
 		Menu file = new Menu("File");
 		Menu edit  = new Menu("Edit");
 		Menu tools = new Menu("Tools");
 		
 		file.getItems().addAll(newMI,closeMI);
-		edit.getItems().addAll(copyMI,pasteMI,deleteMI);
-	
+		edit.getItems().addAll(copyMI,pasteMI,deleteMI,groupMI,ungroupMI,redoMI,undoMI);
+		
 		menubar= new MenuBar(file,edit,tools);
 
 		vbox.getChildren().add(menubar);
