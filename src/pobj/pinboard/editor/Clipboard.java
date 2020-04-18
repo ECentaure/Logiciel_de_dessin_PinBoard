@@ -5,19 +5,27 @@ import java.util.List;
 
 import pobj.pinboard.document.Clip;
 
-public class Clipboard {
+public class Clipboard implements ClipboardListener {
 	
-	private List<Clip> contents = new ArrayList<Clip>();
-	private List<ClipboardListener> liste_cibles = new ArrayList<ClipboardListener>();
+	private List<Clip> contents ;
+	private List<ClipboardListener> liste_cibles;
 	
 	private Clipboard() {
-		
+		contents = new ArrayList<Clip>();
+		liste_cibles = new ArrayList<ClipboardListener>();
 	}
 	
 	private static Clipboard cb = new Clipboard();
 	
 	public static Clipboard getInstance() {
 		return cb;
+	}
+	
+	public void addListener(ClipboardListener listener) {
+		liste_cibles.add(listener);
+	}
+	public void removeListener(ClipboardListener listener) {
+		liste_cibles.remove(listener);
 	}
 	
 	public void copyToClipboard(List<Clip> clips){
@@ -31,6 +39,7 @@ public class Clipboard {
 			cible.clipboardChanged();
 			
 		}
+		
 	}
 	
 	public List<Clip> copyFromClipboard(){
@@ -40,10 +49,6 @@ public class Clipboard {
 			contents_copy.add(element.copy());
 		}
 		
-		for(ClipboardListener cible : liste_cibles) {
-			cible.clipboardChanged();
-			//System.out.print("copyfromclip");
-		}
 		return contents_copy;
 	}
 	
@@ -59,11 +64,12 @@ public class Clipboard {
 	public boolean isEmpty() {
 		return (contents.isEmpty());
 	}
+
+	@Override
+	public void clipboardChanged() {
+		// TODO Auto-generated method stub
+		
+	}
 	
-	public void addListener(ClipboardListener listener) {
-		liste_cibles.add(listener);
-	}
-	public void removeListener(ClipboardListener listener) {
-		liste_cibles.remove(listener);
-	}
+
 }

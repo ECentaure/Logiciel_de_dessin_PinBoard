@@ -27,6 +27,7 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 	private ToolBar toolbar;
 	private Separator separator;
 	private Selection selection;
+	private Stage stage;
 	
 	private MenuItem copyMI;
 	private MenuItem pasteMI;
@@ -36,7 +37,7 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 
 	
 	public EditorWindow(Stage stage) {
-		
+		this.stage = stage;
 		Clipboard.getInstance().addListener(this);
 		
 		ToolEllipse tool_ellipse = new ToolEllipse();
@@ -63,16 +64,16 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		MenuItem closeMI = new MenuItem("Close");
 		
 		MenuItem copyMI = new MenuItem("Copy");
-		MenuItem pasteMI = new MenuItem("Paste");
+		 pasteMI = new MenuItem("Paste");
 		MenuItem deleteMI = new MenuItem("Delete");
 		
 		
 		newMI.setOnAction( (e)-> new EditorWindow(new Stage()));
 		closeMI.setOnAction( (e)-> 	{Clipboard.getInstance().removeListener(this); stage.close() ;});
 		
-		copyMI.setOnAction((e)-> Clipboard.getInstance().copyToClipboard(this.getSelection().getContents()));
+		copyMI.setOnAction((e)-> {Clipboard.getInstance().copyToClipboard(selection.getContents());});
 		pasteMI.setOnAction((e)->{ System.out.print("clipboard vide"); board.addClip(Clipboard.getInstance().copyFromClipboard() ) ; draw() ; } );
-		deleteMI.setOnAction((e)-> Clipboard.getInstance().clear());
+		deleteMI.setOnAction((e)->{ Clipboard.getInstance().clear();});
 		
 		Menu file = new Menu("File");
 		Menu edit  = new Menu("Edit");
@@ -110,7 +111,7 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		vbox.getChildren().add(separator);
 		vbox.getChildren().add(label);
 		
-		//pasteMI.setDisable(true);
+		pasteMI.setDisable(true);
 
 		
 		stage.setScene(new javafx.scene.Scene(vbox));
@@ -123,7 +124,6 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		//this.draw();
 	}
 	public void drag (MouseEvent e) {
-		
 		
 		outil_courant.drag(this, e);
 		this.draw();
@@ -159,11 +159,12 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 
 	public void clipboardChanged() {
 		
+
 		if(Clipboard.getInstance().isEmpty()) {	
 			pasteMI.setDisable(true); //Paste est grisé
-			System.out.print("clipboard vide");
+			//System.out.print("clipboard vide");
 		}else {
-			System.out.print("clipboard non vide");
+			//System.out.print("clipboard non vide");
 			pasteMI.setDisable(false);
 		}
 		

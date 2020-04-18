@@ -4,13 +4,20 @@ import com.sun.glass.events.KeyEvent;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import pobj.pinboard.document.Clip;
+import pobj.pinboard.document.ClipRect;
 import pobj.pinboard.editor.EditorInterface;
 
 public class ToolSelection implements Tool {
 
 	private double click_x0;
 	private double click_y0;
+	private ClipRect contour_rectangle;
+	private double x0;
+	private double y0;
+	private double xn;
+	private double yn;
 	
 	@Override
 	public void press(EditorInterface i, MouseEvent e) {
@@ -20,10 +27,22 @@ public class ToolSelection implements Tool {
 		
 		if(e.isShiftDown()) {
 			i.getSelection().toogleSelect(i.getBoard(), e.getX(),e.getY());
+			 
+			
 		}else {
 			//i.getSelection().clear();
 			i.getSelection().select(i.getBoard(), e.getX(),e.getY());
 		}
+		
+		if(!i.getSelection().getContents().isEmpty()) {
+			Clip elem = i.getSelection().getContents().get(0);
+			x0 = elem.getLeft();
+			y0 = elem.getTop();
+			xn = elem.getRight();
+			yn = elem.getBottom();
+			contour_rectangle = new ClipRect( x0,y0,xn,yn, Color.BLUE);
+		}
+
 	}
 
 	@Override
@@ -36,7 +55,8 @@ public class ToolSelection implements Tool {
 		for(Clip element : i.getSelection().getContents()) {
 			
 			element.setGeometry(element.getLeft() + deplacement_x ,element.getTop() + deplacement_y,element.getRight() + deplacement_x,element.getBottom() + deplacement_y);
-			
+			contour_rectangle.setGeometry(element.getLeft(),element.getTop(),element.getRight(),element.getBottom());
+
 			i.getBoard().addClip(element);
 		}
 	}
@@ -47,7 +67,13 @@ public class ToolSelection implements Tool {
 	}
 
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
-		i.getBoard().draw(gc);
+		i.getBoard().draw(gc.getCanvas().getGraphicsContext2D());
+
+        gc.setLineWidth(5);
+        gc.setStroke(Color.BLUE);
+		gc.strokeRect(contour_rectangle.getLeft(),contour_rectangle.getTop(),contour_rectangle.getRight() - contour_rectangle.getLeft(),this.contour_rectangle.getBottom() - this.contour_rectangle.getTop());
+
+		
 	}
 
 	@Override
