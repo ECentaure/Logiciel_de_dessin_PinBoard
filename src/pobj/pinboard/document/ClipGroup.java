@@ -15,17 +15,14 @@ public class ClipGroup extends AbstractClip implements Composite{
 	private Color color;
 	
 	public ClipGroup() {
-		/*
+		
+		super(0,0,0,0, Color.ALICEBLUE);
+		liste_clip = new ArrayList<Clip>(); //!!!!!!!!!!!
 		left = 0;
 		top = 0;
 		right = 0;
 		bottom = 0 ;
 		
-		*/
-		
-		
-		super(0,0,0,0, Color.ALICEBLUE);
-		liste_clip = new ArrayList<Clip>(); //!!!!!!!!!!!
 	}
 
 	
@@ -42,6 +39,7 @@ public class ClipGroup extends AbstractClip implements Composite{
 	@Override
 	public void setGeometry(double left, double top, double right, double bottom) {
 		move(right - left , bottom - top );
+		
 	}
 
 	@Override
