@@ -7,14 +7,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class ClipGroup extends AbstractClip implements Composite{
-	private List<Clip> liste_clip = new ArrayList<Clip>();
+	private List<Clip> liste_clip;
 	private double left;
 	private double top;
 	private double right;
 	private double bottom;
 	private Color color;
-	
-	private Clip rectangle_englobant;
 	
 	public ClipGroup() {
 		/*
@@ -27,7 +25,7 @@ public class ClipGroup extends AbstractClip implements Composite{
 		
 		
 		super(0,0,0,0, Color.ALICEBLUE);
-		
+		liste_clip = new ArrayList<Clip>(); //!!!!!!!!!!!
 	}
 
 	
@@ -101,7 +99,10 @@ public class ClipGroup extends AbstractClip implements Composite{
 			{
 				bottom = e.getBottom();
 			}
+			
 		}
+		
+		super.setGeometry(left, top, right, bottom);
 	}
 
 }
