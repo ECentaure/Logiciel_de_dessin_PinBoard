@@ -5,7 +5,10 @@ package pobj.pinboard.editor.tools;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import pobj.pinboard.document.*;
+import pobj.pinboard.editor.Clipboard;
 import pobj.pinboard.editor.EditorInterface;
+import pobj.pinboard.editor.commands.CommandAdd;
+import pobj.pinboard.editor.commands.CommandMove;
 import javafx.scene.paint.Color;
 
 public class ToolRect implements Tool{
@@ -39,8 +42,11 @@ public class ToolRect implements Tool{
 		contour = false;
 	
 		ClipRect rectangle = new ClipRect( Math.min(x0,e.getX()) ,Math.min(y0,e.getY()) , Math.max(x0,e.getX()), Math.max(y0,e.getY()), Color.BLACK);
-		i.getBoard().addClip(rectangle);
-	    
+		//i.getBoard().addClip(rectangle);
+		CommandAdd c_add = new CommandAdd(i,rectangle);
+		i.getUndoStack().addCommand(new CommandAdd(i,rectangle));
+		c_add.execute();
+
 		
 	}
 

@@ -108,7 +108,7 @@ public class ClipGroup extends AbstractClip implements Composite{
 	@Override
 	public void addClip(Clip toAdd) {
 		this.liste_clip.add(toAdd);
-		//System.out.println(liste_clip.size());
+		System.out.println(liste_clip.size());
 		maj_coord();
 		
 	}

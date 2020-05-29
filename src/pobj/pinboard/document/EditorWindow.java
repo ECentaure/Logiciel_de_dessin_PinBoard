@@ -9,6 +9,7 @@ import pobj.pinboard.editor.ClipboardListener;
 import pobj.pinboard.editor.CommandStack;
 import pobj.pinboard.editor.EditorInterface;
 import pobj.pinboard.editor.Selection;
+import pobj.pinboard.editor.commands.CommandAdd;
 import pobj.pinboard.editor.tools.Tool;
 import pobj.pinboard.editor.tools.ToolEllipse;
 import pobj.pinboard.editor.tools.ToolRect;
@@ -79,23 +80,23 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		MenuItem redoMI = new MenuItem("Redo");
 		MenuItem undoMI = new MenuItem("Undo");
 		
-		redoMI.setOnAction( (e)-> { cmdstack.undo();});
-		undoMI.setOnAction( (e)-> { cmdstack.redo();});
+		redoMI.setOnAction( (e)-> { cmdstack.redo(); draw();});
+		undoMI.setOnAction( (e)-> { cmdstack.undo(); draw(); });
 		
 		newMI.setOnAction( (e)-> new EditorWindow(new Stage()));
 		closeMI.setOnAction( (e)-> 	{Clipboard.getInstance().removeListener(this); stage.close() ;});
 		
 		copyMI.setOnAction((e)-> {Clipboard.getInstance().copyToClipboard(selection.getContents());});
-		pasteMI.setOnAction((e)->{ System.out.print("clipboard vide"); board.addClip(Clipboard.getInstance().copyFromClipboard() ) ; draw() ; } );
+		pasteMI.setOnAction((e)->{ System.out.print("clipboard vide"); board.addClip(Clipboard.getInstance().copyFromClipboard() ) ; draw() ;  } );
 		deleteMI.setOnAction((e)->{ Clipboard.getInstance().clear();});
 		
-		groupMI.setOnAction( (e)-> { List<Clip> lc = selection.getContents() ; board.removeClip(lc);
-									ClipGroup cg = new ClipGroup(); 
+		groupMI.setOnAction( (e)-> { List<Clip> lc = selection.getContents() ; ClipGroup cg = new ClipGroup(); board.removeClip(lc);
 									for( Clip c : lc ) {cg.addClip(c);}
-									board.addClip(cg);} );
+									board.addClip(cg);
+									System.out.print(cg.getClips().size());} );
 		
-		ungroupMI.setOnAction( (e)-> {{ List<Clip> lc = selection.getContents() ; board.removeClip(lc);
-										ClipGroup cg = new ClipGroup(); List<Clip> degroupe_clip = cg.getClips() ; for( Clip c : degroupe_clip ) {board.addClip(c);}}});
+		ungroupMI.setOnAction( (e)-> {{ List<Clip> lc = selection.getContents() ; board.removeClip(lc);ClipGroup cg = new ClipGroup();
+										 List<Clip> degroupe_clip = cg.getClips() ; for( Clip c : degroupe_clip ) {board.addClip(c);}}});
 		
 		Menu file = new Menu("File");
 		Menu edit  = new Menu("Edit");
@@ -175,7 +176,8 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 	@Override
 	public CommandStack getUndoStack() {
 		
-		return null;
+		return cmdstack;
+		
 	}
 
 

@@ -25,12 +25,14 @@ public class CommandAdd implements Command {
 	public void execute() {
 		// TODO Auto-generated method stub
 		editor.getBoard().addClip(lc);
+		
+		
 	}
 
 	@Override
 	public void undo() {
 		editor.getBoard().removeClip(lc);
-		
+
 	}
 
 }

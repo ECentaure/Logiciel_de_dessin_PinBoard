@@ -7,7 +7,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import pobj.pinboard.document.Clip;
 import pobj.pinboard.document.ClipRect;
+import pobj.pinboard.editor.Clipboard;
 import pobj.pinboard.editor.EditorInterface;
+import pobj.pinboard.editor.commands.CommandAdd;
+import pobj.pinboard.editor.commands.CommandMove;
 
 public class ToolSelection implements Tool {
 
@@ -54,19 +57,23 @@ public class ToolSelection implements Tool {
 		
 		for(Clip element : i.getSelection().getContents()) {
 			
-			element.setGeometry(element.getLeft() + deplacement_x ,element.getTop() + deplacement_y,element.getRight() + deplacement_x,element.getBottom() + deplacement_y);
+			//element.setGeometry(element.getLeft() + deplacement_x ,element.getTop() + deplacement_y,element.getRight() + deplacement_x,element.getBottom() + deplacement_y);
+			element.move(deplacement_x, deplacement_y);
 			contour_rectangle.setGeometry(element.getLeft(),element.getTop(),element.getRight(),element.getBottom());
-
 			i.getBoard().addClip(element);
 		}
 	}
 
 	
 	public void release(EditorInterface i, MouseEvent e) {
-
+		
+		CommandMove c_move = new CommandMove(i,Clipboard.getInstance().copyFromClipboard(),x0 , y0);
+		i.getUndoStack().addCommand(c_move);
+		c_move.execute();
 	}
 
 	public void drawFeedback(EditorInterface i, GraphicsContext gc) {
+		
 		i.getBoard().draw(gc.getCanvas().getGraphicsContext2D());
 
         gc.setLineWidth(5);
