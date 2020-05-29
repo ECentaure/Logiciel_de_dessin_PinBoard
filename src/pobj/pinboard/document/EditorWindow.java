@@ -10,6 +10,8 @@ import pobj.pinboard.editor.CommandStack;
 import pobj.pinboard.editor.EditorInterface;
 import pobj.pinboard.editor.Selection;
 import pobj.pinboard.editor.commands.CommandAdd;
+import pobj.pinboard.editor.commands.CommandGroup;
+import pobj.pinboard.editor.commands.CommandUngroup;
 import pobj.pinboard.editor.tools.Tool;
 import pobj.pinboard.editor.tools.ToolEllipse;
 import pobj.pinboard.editor.tools.ToolRect;
@@ -90,13 +92,16 @@ public class EditorWindow implements EditorInterface ,ClipboardListener{
 		pasteMI.setOnAction((e)->{ System.out.print("clipboard vide"); board.addClip(Clipboard.getInstance().copyFromClipboard() ) ; draw() ;  } );
 		deleteMI.setOnAction((e)->{ Clipboard.getInstance().clear();});
 		
-		groupMI.setOnAction( (e)-> { List<Clip> lc = selection.getContents() ; ClipGroup cg = new ClipGroup(); board.removeClip(lc);
-									for( Clip c : lc ) {cg.addClip(c);}
-									board.addClip(cg);
-									System.out.print(cg.getClips().size());} );
+		groupMI.setOnAction( (e)-> { List<Clip> lc = selection.getContents() ; 
+									 CommandGroup cgr = new CommandGroup(this, lc);
+									cmdstack.addCommand(cgr);
+									cgr.execute();
+									} );
 		
-		ungroupMI.setOnAction( (e)-> {{ List<Clip> lc = selection.getContents() ; board.removeClip(lc);ClipGroup cg = new ClipGroup();
-										 List<Clip> degroupe_clip = cg.getClips() ; for( Clip c : degroupe_clip ) {board.addClip(c);}}});
+		ungroupMI.setOnAction( (e)-> { List<Clip> lc = selection.getContents() ;
+		 								CommandGroup cugr = new CommandGroup(this, lc);
+										cmdstack.addCommand(cugr);
+										cugr.execute();});
 		
 		Menu file = new Menu("File");
 		Menu edit  = new Menu("Edit");
